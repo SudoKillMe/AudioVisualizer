@@ -1,6 +1,22 @@
 
 const fileInput = document.getElementById('uploadFile');
 
+const CVSWIDTH = 600;
+const CVSHEIGHT = 500;
+
+const BARWIDTH = 10;
+
+const canvas = document.getElementById('canvas');
+const canvasCtx = canvas.getContext('2d');
+
+canvas.width = CVSWIDTH;
+canvas.height = CVSHEIGHT;
+
+canvasCtx.strokeRect(0,0,CVSWIDTH,CVSHEIGHT);
+
+let analyser;
+let array;
+
 fileInput.onchange = function (e) {
   console.log(e);
   console.log(fileInput.files);
@@ -17,7 +33,7 @@ fileInput.onchange = function (e) {
       console.log(buffer);
 
       var audioBufferSourceNode = audioContext.createBufferSource();
-      var analyser = audioContext.createAnalyser();
+      analyser = audioContext.createAnalyser();
 
       audioBufferSourceNode.connect(analyser);
       analyser.connect(audioContext.destination);
@@ -27,11 +43,21 @@ fileInput.onchange = function (e) {
       audioBufferSourceNode.start(0);
 
 
-      var array = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(array);
-      console.log('r: ', analyser);
-      console.log('array: ', array);
+      array = new Uint8Array(analyser.frequencyBinCount);
+      
+      draw();
     });
   }
   fileReader.readAsArrayBuffer(file);
+}
+
+function draw () {
+  requestAnimationFrame(draw)
+  canvasCtx.clearRect(0, 0, CVSWIDTH, CVSHEIGHT);
+  analyser.getByteFrequencyData(array);
+  console.log('array: ', array);
+  for (let i = 0; i < array.length; i += BARWIDTH) {
+    canvasCtx.fillRect(i, 0, BARWIDTH, array[i]);
+  }
+
 }
