@@ -57,7 +57,7 @@ function draw () {
   analyser.getByteFrequencyData(array);
   console.log('array: ', array);
   for (let i = 0; i < array.length; i += BARWIDTH) {
-    canvasCtx.fillRect(i, 0, BARWIDTH, array[i]);
+    canvasCtx.fillRect(i, CVSHEIGHT - array[i], BARWIDTH, array[i]);
   }
 
 }
