@@ -1,3 +1,14 @@
+// new AudioVisualizer(file | url, options)
+// method: config
+// method: start
+
+var AudioContext = window.AudioContext || window.webkitAudioContext
+
+var AudioVisualizer = function () {
+
+}
+
+
 
 const fileInput = document.getElementById('uploadFile');
 
