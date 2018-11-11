@@ -22,14 +22,19 @@ var AudioVisualizer = function (id, options) {
   this.options = {};
 
   this.start = function () {
-    console.log('id: ', id);
-    console.log('getElement: ', getElement)
-    console.log('document: ', document);
     var input = document.getElementById(id) 
-    console.log('input: ', input);
-    var inputChangePromise = promise(input, 'onchange');
+    var fileReader = new FileReader()
+
+    var inputChangePromise = promise(input, 'onchange')
+    var fileLoadPromise = promise(fileReader, 'onload')
+
     inputChangePromise.then(function () {
-      console.log(input.files);
+      var file = input.files && input.files[0];
+
+      fileReader.readAsArrayBuffer(file);
+    })
+    fileLoadPromise.then(function (e) {
+      console.log('onload, ', e);
     })
   }
 
